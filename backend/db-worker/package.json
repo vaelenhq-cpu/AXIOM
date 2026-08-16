@@ -1,0 +1,9 @@
+{
+  "name": "axiom-db-worker",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "devDependencies": {
+    "wrangler": "^4.123.0"
+  }
+}
