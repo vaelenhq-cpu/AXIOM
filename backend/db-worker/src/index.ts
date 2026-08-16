@@ -22,8 +22,8 @@ export default {
         const result = await env.DB
           .prepare(`
             SELECT
-              sqlite_version() AS sqlite_version,
-              CURRENT_TIMESTAMP AS now
+              CURRENT_TIMESTAMP AS now,
+              1 AS connection_ok
           `)
           .first();
 
