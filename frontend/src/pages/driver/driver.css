@@ -1,0 +1,1256 @@
+.driver-login-page,
+.driver-panel-page {
+  min-height: 100vh;
+
+  padding: 1.2rem;
+
+  background: #07090e;
+  color: #eef1f7;
+}
+
+.driver-login-page {
+  display: grid;
+  place-items: center;
+}
+
+.driver-login-card {
+  width:
+    min(
+      100%,
+      420px
+    );
+
+  padding: 1.5rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius: 16px;
+
+  background: #0b0e14;
+}
+
+.driver-overline {
+  color: #719aff;
+
+  font-size: .62rem;
+  font-weight: 700;
+
+  letter-spacing: .15em;
+}
+
+.driver-login-card h1,
+.driver-header h1 {
+  margin:
+    .5rem
+    0;
+}
+
+.driver-login-card p {
+  color: #81899a;
+}
+
+.driver-login-form {
+  display: grid;
+  gap: 1rem;
+
+  margin-top: 1.5rem;
+}
+
+.driver-login-form label {
+  display: grid;
+  gap: .4rem;
+}
+
+.driver-login-form span {
+  color: #858d9d;
+
+  font-size: .7rem;
+}
+
+.driver-login-form input {
+  padding: .85rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius: 8px;
+
+  background: #070a0f;
+  color: white;
+}
+
+.driver-login-form button,
+.driver-operation-card button {
+  padding: .85rem;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: #3979ff;
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.driver-error {
+  color: #ff8d8d;
+}
+
+.driver-header {
+  display: flex;
+  align-items: center;
+  justify-content:
+    space-between;
+
+  gap: 1rem;
+
+  padding-bottom: 1rem;
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.07);
+}
+
+.driver-header button {
+  border: 0;
+
+  background: transparent;
+
+  color: #8790a0;
+}
+
+.driver-panel-page section {
+  margin-top: 1.5rem;
+}
+
+.driver-operation-list {
+  display: grid;
+  gap: 1rem;
+
+  margin-top: 1rem;
+}
+
+.driver-operation-card {
+  padding: 1.2rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius: 13px;
+
+  background: #0b0e14;
+}
+
+.driver-operation-card h3 {
+  margin:
+    .65rem
+    0
+    .25rem;
+}
+
+.driver-operation-card p {
+  color: #858d9d;
+}
+
+.driver-operation-status {
+  color: #82a4ff;
+
+  font-size: .65rem;
+
+  text-transform: uppercase;
+}
+
+.driver-operation-card button {
+  width: 100%;
+
+  margin-top: 1rem;
+}
+
+.driver-empty {
+  padding: 2rem;
+
+  color: #7d8595;
+
+  text-align: center;
+}
+
+.driver-header-sub {
+  margin:
+    .35rem
+    0
+    0;
+
+  color: #788091;
+
+  font-size: .72rem;
+}
+
+.driver-task-section {
+  margin-top: 1.25rem;
+}
+
+.driver-task-top {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content:
+    space-between;
+
+  gap: 1rem;
+}
+
+.driver-task-top > div {
+  display: grid;
+  gap: .35rem;
+}
+
+.driver-booking-code {
+  color: #737c8e;
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+
+  font-size: .62rem;
+}
+
+.driver-task-time {
+  color: #eef2fb;
+
+  font-size: 1.2rem;
+}
+
+.driver-route {
+  margin-top: 1.2rem;
+
+  padding: 1rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.06);
+
+  border-radius: 11px;
+
+  background: #070a0f;
+}
+
+.driver-route-point {
+  display: flex;
+  align-items: flex-start;
+
+  gap: .75rem;
+}
+
+.driver-route-point small {
+  display: block;
+
+  color: #697286;
+
+  font-size: .55rem;
+
+  letter-spacing: .12em;
+}
+
+.driver-route-point strong {
+  display: block;
+
+  margin-top: .25rem;
+
+  font-size: .84rem;
+}
+
+.route-dot {
+  width: 9px;
+  height: 9px;
+
+  margin-top: .3rem;
+
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+
+  background: #4c84ff;
+
+  box-shadow:
+    0 0 12px
+    rgba(76,132,255,.5);
+}
+
+.route-dot.destination {
+  background: #70c89d;
+
+  box-shadow:
+    0 0 12px
+    rgba(112,200,157,.35);
+}
+
+.driver-route-line {
+  width: 1px;
+  height: 24px;
+
+  margin:
+    .3rem
+    0
+    .3rem
+    4px;
+
+  background:
+    rgba(255,255,255,.12);
+}
+
+.driver-info-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap: .65rem;
+
+  margin-top: .8rem;
+}
+
+.driver-info-card {
+  padding: .75rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.055);
+
+  border-radius: 9px;
+
+  background: #080b10;
+}
+
+.driver-info-card span {
+  display: block;
+
+  color: #687183;
+
+  font-size: .57rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: .08em;
+}
+
+.driver-info-card strong {
+  display: block;
+
+  margin-top: .35rem;
+
+  font-size: .75rem;
+
+  line-height: 1.35;
+}
+
+.driver-vehicle-card,
+.driver-note-card {
+  margin-top: .8rem;
+
+  padding: .85rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.06);
+
+  border-radius: 10px;
+
+  background: #080b10;
+}
+
+.driver-vehicle-card > span,
+.driver-note-card > span {
+  display: block;
+
+  color: #6d7689;
+
+  font-size: .57rem;
+
+  letter-spacing: .1em;
+}
+
+.driver-vehicle-card > strong,
+.driver-note-card > strong {
+  display: block;
+
+  margin-top: .4rem;
+
+  font-size: .84rem;
+}
+
+.driver-vehicle-card p,
+.driver-note-card p {
+  margin:
+    .3rem
+    0
+    0;
+
+  color: #9199a9;
+
+  font-size: .7rem;
+
+  line-height: 1.5;
+}
+
+.driver-task-actions {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap: .65rem;
+
+  margin-top: .8rem;
+}
+
+.driver-secondary-action {
+  display: grid;
+
+  place-items: center;
+
+  min-height: 42px;
+
+  padding: .7rem;
+
+  border:
+    1px solid
+    rgba(90,139,255,.18);
+
+  border-radius: 8px;
+
+  background:
+    rgba(70,120,255,.055);
+
+  color: #8eafff;
+
+  text-decoration: none;
+
+  font-size: .7rem;
+
+  font-weight: 700;
+}
+
+.driver-primary-action {
+  width: 100%;
+
+  margin-top: .8rem;
+
+  padding: .9rem;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3476ff,
+      #518aff
+    );
+
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.driver-primary-action.danger {
+  background:
+    linear-gradient(
+      135deg,
+      #25855e,
+      #3eaa7a
+    );
+}
+
+.driver-primary-action:disabled {
+  opacity: .5;
+
+  cursor: wait;
+}
+
+.driver-complete-state {
+  margin-top: .8rem;
+
+  padding: .85rem;
+
+  border:
+    1px solid
+    rgba(76,196,133,.15);
+
+  border-radius: 9px;
+
+  background:
+    rgba(76,196,133,.06);
+
+  color: #7bd3a6;
+
+  text-align: center;
+
+  font-size: .75rem;
+
+  font-weight: 700;
+}
+
+@media (
+  max-width: 480px
+) {
+  .driver-info-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .driver-task-actions {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+.driver-task-actions {
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+}
+
+.driver-secondary-action {
+  min-height: 46px;
+}
+
+@media (
+  max-width: 390px
+) {
+  .driver-task-actions {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+.driver-tabs {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0,1fr)
+    );
+
+  gap: .45rem;
+
+  margin-bottom: 1rem;
+
+  padding: .3rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.06);
+
+  border-radius: 10px;
+
+  background: #080b10;
+}
+
+.driver-tab {
+  min-height: 38px;
+
+  border: 0;
+
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: #717a8d;
+
+  font-size: .68rem;
+
+  font-weight: 650;
+
+  cursor: pointer;
+}
+
+.driver-tab.active {
+  color: #dfe8ff;
+
+  background:
+    rgba(76,132,255,.12);
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(76,132,255,.13);
+}
+
+.driver-operation-card.active-operation {
+  border-color:
+    rgba(100,213,160,.22);
+
+  box-shadow:
+    0 0 0 1px
+    rgba(100,213,160,.045)
+    inset,
+    0 20px 50px
+    rgba(0,0,0,.16);
+}
+
+.driver-operation-card.ready-operation {
+  border-color:
+    rgba(79,130,255,.2);
+}
+
+.driver-operation-card.active-operation
+.driver-operation-status {
+  color: #64d5a0;
+}
+
+.driver-operation-card.ready-operation
+.driver-operation-status {
+  color: #71a0ff;
+}
+
+.driver-focus {
+  margin-bottom: 1rem;
+}
+
+.driver-focus-card,
+.driver-focus-empty {
+  padding: 1rem;
+
+  border:
+    1px solid
+    rgba(79,130,255,.16);
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(79,130,255,.08),
+      rgba(255,255,255,.015)
+    ),
+    #0a0d13;
+}
+
+.driver-focus-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 1rem;
+}
+
+.driver-focus-head span,
+.driver-focus-empty span {
+  display: block;
+
+  color: #7097f5;
+
+  font-size: .58rem;
+
+  font-weight: 700;
+
+  letter-spacing: .11em;
+}
+
+.driver-focus-head strong,
+.driver-focus-empty strong {
+  display: block;
+
+  margin-top: .35rem;
+
+  font-size: .88rem;
+
+  line-height: 1.35;
+}
+
+.driver-focus-head b {
+  font-size: 1.3rem;
+}
+
+.driver-focus-meta {
+  display: flex;
+
+  gap: .8rem;
+
+  margin-top: .75rem;
+
+  color: #6f788a;
+
+  font-size: .62rem;
+}
+
+.driver-issue-actions {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0,1fr)
+    );
+
+  gap: .45rem;
+
+  margin-top: .8rem;
+}
+
+.driver-issue-actions button {
+  min-height: 38px;
+
+  padding: .55rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.06);
+
+  border-radius: 7px;
+
+  background:
+    #080b10;
+
+  color:
+    #7f889a;
+
+  font-size: .6rem;
+
+  cursor: pointer;
+}
+
+.driver-issue-actions button:hover {
+  border-color:
+    rgba(245,127,132,.2);
+
+  color:
+    #ef9a9d;
+}
+
+@media (
+  max-width: 460px
+) {
+  .driver-issue-actions {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+/* =========================================
+   DRIVER TASK NAVIGATION
+========================================= */
+
+.driver-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: .4rem;
+}
+
+.driver-tab strong {
+  min-width: 18px;
+  height: 18px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0 .3rem;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255,255,255,.045);
+
+  color: #7e8799;
+
+  font-size: .55rem;
+}
+
+.driver-tab.active strong {
+  color: #9eb9ff;
+
+  background:
+    rgba(79,130,255,.12);
+}
+
+
+/* =========================================
+   COMPLETED OPERATION
+========================================= */
+
+.driver-operation-compact {
+  padding: 1rem;
+}
+
+.driver-compact-head {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 1rem;
+}
+
+.driver-compact-head > div {
+  display: grid;
+  gap: .3rem;
+}
+
+.driver-compact-head small {
+  color: #596274;
+
+  font-size: .58rem;
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.driver-compact-head > strong {
+  font-size: 1rem;
+
+  color: #cdd4df;
+}
+
+.driver-compact-route {
+  margin:
+    .9rem
+    0
+    0;
+
+  font-size: .88rem;
+
+  line-height: 1.4;
+}
+
+.driver-compact-meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: .45rem .8rem;
+
+  margin-top: .65rem;
+
+  color: #6f788a;
+
+  font-size: .62rem;
+}
+
+.driver-history-toggle {
+  width: 100%;
+
+  margin-top: .9rem;
+
+  padding: .65rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.055);
+
+  border-radius: 7px;
+
+  background: #080b10;
+
+  color: #748097;
+
+  font-size: .62rem;
+
+  cursor: pointer;
+}
+
+.driver-history-detail {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap: .5rem;
+
+  margin-top: .65rem;
+}
+
+.driver-history-detail[hidden] {
+  display: none;
+}
+
+.driver-history-detail > div {
+  padding: .65rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.045);
+
+  border-radius: 7px;
+
+  background: #070a0f;
+}
+
+.driver-history-detail span {
+  display: block;
+
+  color: #626c7e;
+
+  font-size: .53rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: .08em;
+}
+
+.driver-history-detail strong {
+  display: block;
+
+  margin-top: .28rem;
+
+  font-size: .68rem;
+}
+
+
+/* =========================================
+   ACTIVE TASK EMPHASIS
+========================================= */
+
+.driver-operation-card.active-operation {
+  position: relative;
+}
+
+.driver-operation-card.active-operation::before {
+  content: "";
+
+  position: absolute;
+
+  left: -1px;
+  top: 18px;
+  bottom: 18px;
+
+  width: 2px;
+
+  border-radius: 2px;
+
+  background: #64d5a0;
+
+  box-shadow:
+    0 0 15px
+    rgba(100,213,160,.38);
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (
+  max-width: 390px
+) {
+  .driver-tabs {
+    gap: .25rem;
+  }
+
+  .driver-tab {
+    font-size: .6rem;
+  }
+
+  .driver-tab strong {
+    display: none;
+  }
+
+  .driver-history-detail {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+/* =========================================
+   DRIVER ISSUE BOTTOM SHEET
+========================================= */
+
+.driver-issue-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 100;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: center;
+
+  padding: 1rem;
+
+  background:
+    rgba(0,0,0,.68);
+
+  backdrop-filter:
+    blur(5px);
+}
+
+.driver-issue-backdrop[hidden] {
+  display: none;
+}
+
+.driver-issue-sheet {
+  width:
+    min(
+      100%,
+      560px
+    );
+
+  max-height:
+    min(
+      88dvh,
+      720px
+    );
+
+  overflow-y: auto;
+
+  padding: 1.1rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius:
+    18px
+    18px
+    12px
+    12px;
+
+  background:
+    #0b0f16;
+
+  box-shadow:
+    0 -24px 70px
+    rgba(0,0,0,.42);
+}
+
+.driver-issue-sheet-head {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content:
+    space-between;
+
+  gap: 1rem;
+}
+
+.driver-issue-sheet-head span {
+  color: #719aff;
+
+  font-size: .56rem;
+
+  font-weight: 700;
+
+  letter-spacing: .12em;
+}
+
+.driver-issue-sheet-head h2 {
+  margin:
+    .35rem
+    0
+    0;
+
+  font-size: 1.2rem;
+}
+
+.driver-issue-sheet-head button {
+  width: 34px;
+  height: 34px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.07);
+
+  border-radius: 8px;
+
+  background: #080b10;
+
+  color: #858e9f;
+
+  font-size: 1.1rem;
+}
+
+.driver-issue-types {
+  display: grid;
+
+  grid-template-columns:
+    1fr;
+
+  gap: .5rem;
+
+  margin-top: 1.1rem;
+}
+
+.driver-issue-types button {
+  min-height: 44px;
+
+  padding: .7rem .8rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.055);
+
+  border-radius: 8px;
+
+  background: #080b10;
+
+  color: #8791a4;
+
+  text-align: left;
+
+  font-size: .7rem;
+
+  cursor: pointer;
+}
+
+.driver-issue-types button.active {
+  border-color:
+    rgba(79,130,255,.28);
+
+  background:
+    rgba(79,130,255,.09);
+
+  color: #a8c0ff;
+}
+
+.driver-issue-field {
+  display: grid;
+
+  gap: .45rem;
+
+  margin-top: 1rem;
+}
+
+.driver-issue-field span {
+  color: #7d8798;
+
+  font-size: .62rem;
+}
+
+.driver-issue-field textarea {
+  width: 100%;
+
+  resize: vertical;
+
+  padding: .8rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.065);
+
+  border-radius: 9px;
+
+  outline: none;
+
+  color: #eef2f8;
+
+  background: #070a0f;
+
+  font: inherit;
+
+  line-height: 1.5;
+}
+
+.driver-issue-field textarea:focus {
+  border-color:
+    rgba(79,130,255,.45);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(79,130,255,.07);
+}
+
+.driver-issue-error {
+  margin-top: .7rem;
+
+  padding: .65rem .75rem;
+
+  border:
+    1px solid
+    rgba(245,127,132,.16);
+
+  border-radius: 8px;
+
+  background:
+    rgba(245,127,132,.06);
+
+  color: #ef9a9d;
+
+  font-size: .65rem;
+}
+
+.driver-issue-sheet-actions {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1.4fr;
+
+  gap: .6rem;
+
+  margin-top: 1rem;
+}
+
+.driver-issue-sheet-actions button {
+  min-height: 44px;
+
+  border-radius: 8px;
+
+  font-size: .7rem;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.driver-issue-cancel {
+  border:
+    1px solid
+    rgba(255,255,255,.065);
+
+  background: #080b10;
+
+  color: #818b9d;
+}
+
+.driver-issue-submit {
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #3979ff,
+      #548bff
+    );
+
+  color: white;
+}
+
+.driver-issue-submit:disabled {
+  opacity: .5;
+}
+
+body.driver-modal-open {
+  overflow: hidden;
+}

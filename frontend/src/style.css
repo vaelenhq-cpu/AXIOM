@@ -1,0 +1,483 @@
+:root {
+  /* =========================================
+     AXIOM DESIGN SYSTEM
+  ========================================= */
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  color-scheme: dark;
+
+  /* Background */
+  --ax-bg: #07090d;
+  --ax-bg-soft: #090c12;
+  --ax-surface: #0b0f16;
+  --ax-surface-2: #0e131c;
+  --ax-surface-3: #111722;
+
+  /* Borders */
+  --ax-border:
+    rgba(255,255,255,.065);
+
+  --ax-border-strong:
+    rgba(255,255,255,.11);
+
+  /* Typography */
+  --ax-text: #f2f5fa;
+  --ax-text-soft: #b6bdc9;
+  --ax-text-muted: #7c8595;
+  --ax-text-ghost: #525c6d;
+
+  /* Brand */
+  --ax-blue: #4f82ff;
+  --ax-blue-bright: #71a0ff;
+  --ax-blue-soft:
+    rgba(79,130,255,.11);
+
+  /* States */
+  --ax-green: #64d5a0;
+  --ax-green-soft:
+    rgba(100,213,160,.09);
+
+  --ax-amber: #f2ba63;
+  --ax-amber-soft:
+    rgba(242,186,99,.09);
+
+  --ax-red: #f57f84;
+  --ax-red-soft:
+    rgba(245,127,132,.09);
+
+  /* Shadows */
+  --ax-shadow:
+    0 18px 50px
+    rgba(0,0,0,.22);
+
+  --ax-shadow-heavy:
+    0 28px 80px
+    rgba(0,0,0,.4);
+
+  /* Radius */
+  --ax-radius-sm: 8px;
+  --ax-radius-md: 12px;
+  --ax-radius-lg: 16px;
+  --ax-radius-xl: 20px;
+
+  /* Layout */
+  --ax-sidebar-width: 252px;
+  --ax-content-max: 1680px;
+
+  color: var(--ax-text);
+
+  background:
+    var(--ax-bg);
+}
+
+
+/* =========================================
+   RESET
+========================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+
+  background:
+    var(--ax-bg);
+}
+
+body,
+#app {
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+
+  min-width: 320px;
+
+  overflow-x: hidden;
+
+  color: var(--ax-text);
+
+  background:
+    radial-gradient(
+      circle at 70% -15%,
+      rgba(58,106,221,.065),
+      transparent 34rem
+    ),
+    var(--ax-bg);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+* {
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    rgba(255,255,255,.12)
+    transparent;
+}
+
+
+/* =========================================
+   SHARED PAGE SYSTEM
+========================================= */
+
+.ax-page {
+  width: 100%;
+  max-width: var(--ax-content-max);
+
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content:
+    space-between;
+
+  gap: 2rem;
+}
+
+.page-overline {
+  display: inline-flex;
+  align-items: center;
+
+  gap: .55rem;
+
+  color: var(--ax-blue-bright);
+
+  font-size: .64rem;
+  font-weight: 700;
+
+  letter-spacing: .15em;
+
+  text-transform: uppercase;
+}
+
+.page-overline::before {
+  content: "";
+
+  width: 18px;
+  height: 1px;
+
+  background:
+    currentColor;
+
+  opacity: .7;
+}
+
+.page-header h1 {
+  margin:
+    .55rem
+    0
+    .65rem;
+
+  color: var(--ax-text);
+
+  font-size:
+    clamp(
+      2.05rem,
+      4vw,
+      3.25rem
+    );
+
+  font-weight: 590;
+
+  line-height: .98;
+
+  letter-spacing:
+    -.045em;
+}
+
+.page-header p {
+  max-width: 680px;
+
+  margin: 0;
+
+  color:
+    var(--ax-text-muted);
+
+  font-size: .88rem;
+
+  line-height: 1.65;
+}
+
+
+/* =========================================
+   SHARED BUTTONS
+========================================= */
+
+.ax-button {
+  min-height: 40px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: .45rem;
+
+  padding:
+    .68rem
+    .9rem;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    var(--ax-radius-sm);
+
+  font-size: .75rem;
+
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    border-color .15s ease,
+    background .15s ease,
+    transform .15s ease;
+}
+
+.ax-button:active {
+  transform:
+    translateY(1px);
+}
+
+.ax-button-primary {
+  background:
+    linear-gradient(
+      135deg,
+      #3f78ff,
+      #5b8eff
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 8px 28px
+    rgba(63,120,255,.14);
+}
+
+.ax-button-secondary {
+  border-color:
+    var(--ax-border);
+
+  background:
+    var(--ax-surface-2);
+
+  color:
+    var(--ax-text-soft);
+}
+
+.ax-button-secondary:hover {
+  border-color:
+    rgba(111,155,255,.3);
+
+  color:
+    var(--ax-text);
+}
+
+
+/* =========================================
+   SHARED FORM
+========================================= */
+
+.ax-input,
+.ax-select {
+  width: 100%;
+
+  min-height: 42px;
+
+  padding:
+    .72rem
+    .82rem;
+
+  border:
+    1px solid
+    var(--ax-border);
+
+  border-radius:
+    var(--ax-radius-sm);
+
+  outline: 0;
+
+  color:
+    var(--ax-text);
+
+  background:
+    var(--ax-surface);
+}
+
+.ax-input:focus,
+.ax-select:focus {
+  border-color:
+    rgba(94,143,255,.55);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(79,130,255,.075);
+}
+
+
+/* =========================================
+   SHARED CARD
+========================================= */
+
+.ax-card {
+  border:
+    1px solid
+    var(--ax-border);
+
+  border-radius:
+    var(--ax-radius-md);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.016),
+      transparent
+    ),
+    var(--ax-surface);
+
+  box-shadow:
+    0 1px 0
+    rgba(255,255,255,.015)
+    inset;
+}
+
+
+/* =========================================
+   SHARED STATUS
+========================================= */
+
+.ax-status {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: .38rem;
+
+  width: max-content;
+
+  padding:
+    .3rem
+    .5rem;
+
+  border-radius: 999px;
+
+  font-size: .58rem;
+
+  font-weight: 700;
+
+  letter-spacing: .055em;
+
+  text-transform: uppercase;
+}
+
+.ax-status::before {
+  content: "";
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background:
+    currentColor;
+}
+
+.ax-status-blue {
+  color:
+    var(--ax-blue-bright);
+
+  background:
+    var(--ax-blue-soft);
+}
+
+.ax-status-green {
+  color:
+    var(--ax-green);
+
+  background:
+    var(--ax-green-soft);
+}
+
+.ax-status-amber {
+  color:
+    var(--ax-amber);
+
+  background:
+    var(--ax-amber-soft);
+}
+
+.ax-status-red {
+  color:
+    var(--ax-red);
+
+  background:
+    var(--ax-red-soft);
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (
+  max-width: 720px
+) {
+  .page-header {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+    gap: 1rem;
+  }
+
+  .page-header h1 {
+    font-size:
+      clamp(
+        1.85rem,
+        9vw,
+        2.6rem
+      );
+  }
+}

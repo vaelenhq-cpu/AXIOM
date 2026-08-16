@@ -1,0 +1,252 @@
+.resource-header {
+  align-items: flex-start;
+}
+
+.resource-primary {
+  padding: .8rem 1rem;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: #3979ff;
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.resource-primary.full {
+  width: 100%;
+  margin-top: .5rem;
+}
+
+.resource-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(260px, 1fr)
+    );
+
+  gap: 1rem;
+
+  margin-top: 2rem;
+}
+
+.resource-card {
+  padding: 1.1rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.07);
+
+  border-radius: 13px;
+
+  background: #0a0d13;
+}
+
+.resource-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.resource-card h3 {
+  margin:
+    .4rem 0
+    0;
+
+  font-size: 1rem;
+}
+
+.resource-type {
+  color: #739bff;
+
+  font-size: .58rem;
+  font-weight: 700;
+
+  letter-spacing: .12em;
+}
+
+.resource-status {
+  color: #76d2a6;
+
+  font-size: .65rem;
+}
+
+.resource-details {
+  display: grid;
+  gap: .35rem;
+
+  margin-top: 1rem;
+
+  color: #7d8596;
+
+  font-size: .72rem;
+}
+
+.resource-empty {
+  padding: 2rem;
+
+  border:
+    1px dashed
+    rgba(255,255,255,.1);
+
+  border-radius: 12px;
+
+  color: #747c8d;
+
+  text-align: center;
+}
+
+.resource-dialog {
+  width:
+    min(
+      92vw,
+      480px
+    );
+
+  padding: 0;
+
+  border:
+    1px solid
+    rgba(255,255,255,.1);
+
+  border-radius: 16px;
+
+  color: #eef1f7;
+
+  background: #0b0e14;
+}
+
+.resource-dialog::backdrop {
+  background:
+    rgba(0,0,0,.7);
+
+  backdrop-filter:
+    blur(4px);
+}
+
+.resource-dialog form {
+  display: grid;
+  gap: 1rem;
+
+  padding: 1.3rem;
+}
+
+.resource-dialog header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 1rem;
+}
+
+.resource-dialog h2 {
+  margin:
+    .35rem 0
+    0;
+}
+
+.resource-dialog label {
+  display: grid;
+  gap: .4rem;
+}
+
+.resource-dialog label span {
+  color: #8b93a3;
+
+  font-size: .7rem;
+}
+
+.resource-dialog input {
+  width: 100%;
+
+  padding: .8rem;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius: 8px;
+
+  outline: none;
+
+  background: #070a0f;
+  color: #eef1f7;
+}
+
+.resource-form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+  gap: .8rem;
+}
+
+.dialog-close {
+  border: 0;
+
+  background: transparent;
+
+  color: #9299a8;
+
+  font-size: 1.4rem;
+
+  cursor: pointer;
+}
+
+.resource-error {
+  padding: .7rem;
+
+  border-radius: 8px;
+
+  color: #ff9292;
+
+  background:
+    rgba(255,70,70,.08);
+}
+
+@media (
+  max-width: 620px
+) {
+  .resource-header {
+    display: grid;
+  }
+
+  .resource-primary {
+    width: 100%;
+  }
+
+  .resource-form-grid {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+.resource-account-button {
+  width: 100%;
+
+  margin-top: 1rem;
+
+  padding: .7rem .8rem;
+
+  border:
+    1px solid
+    rgba(91,145,255,.22);
+
+  border-radius: 8px;
+
+  background:
+    rgba(70,125,255,.08);
+
+  color: #88aaff;
+
+  cursor: pointer;
+}
