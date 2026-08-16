@@ -1,0 +1,16 @@
+[project]
+name = "axiom-cloudflare-api-poc"
+version = "0.1.0"
+description = "AXIOM FastAPI Cloudflare Worker proof of concept"
+requires-python = ">=3.13"
+
+dependencies = [
+    "fastapi",
+    "pydantic"
+]
+
+[dependency-groups]
+dev = [
+    "workers-py",
+    "workers-runtime-sdk"
+]

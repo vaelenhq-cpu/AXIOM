@@ -1,0 +1,13 @@
+{
+  "name": "axiom-api-poc",
+  "main": "src/entry.py",
+  "compatibility_date": "2026-08-17",
+
+  "compatibility_flags": [
+    "python_workers"
+  ],
+
+  "vars": {
+    "AXIOM_ENV": "poc"
+  }
+}
