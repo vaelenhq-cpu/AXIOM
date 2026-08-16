@@ -1,5 +1,13 @@
 {
   "name": "axiom-db-worker",
   "main": "src/index.ts",
-  "compatibility_date": "2026-08-16"
+  "compatibility_date": "2026-08-16",
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "axiom-production",
+      "database_id": "141542f7-665e-476e-81ce-2d0e701959d6"
+    }
+  ]
 }
