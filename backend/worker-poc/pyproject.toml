@@ -6,8 +6,7 @@ requires-python = ">=3.13"
 
 dependencies = [
     "fastapi",
-    "pydantic",
-    "psycopg[binary]"
+    "pydantic"
 ]
 
 [dependency-groups]
