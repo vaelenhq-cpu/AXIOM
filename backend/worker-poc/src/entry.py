@@ -7,7 +7,7 @@ from d1_client import D1Client
 
 app = FastAPI(
     title="AXIOM Cloudflare API PoC",
-    version="0.3.0",
+    version="0.4.0",
 )
 
 
@@ -37,13 +37,7 @@ async def db_health(
         env.DB_SERVICE
     )
 
-    result = await client.first(
-        """
-        SELECT
-            CURRENT_TIMESTAMP AS now,
-            1 AS connection_ok
-        """
-    )
+    result = await client.db_check()
 
     return {
         "api": "ok",
