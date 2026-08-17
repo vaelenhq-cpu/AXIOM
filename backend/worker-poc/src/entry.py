@@ -121,3 +121,103 @@ class Default(WorkerEntrypoint):
             request,
             self.env,
         )
+
+
+@app.post("/commands/booking/create")
+async def command_create_booking(
+    request: Request,
+):
+    payload = await request.json()
+
+    client = D1Client(
+        request.scope["env"].DB_SERVICE
+    )
+
+    result = await client.create_booking(
+        payload
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+@app.post("/commands/booking/status")
+async def command_booking_status(
+    request: Request,
+):
+    payload = await request.json()
+
+    client = D1Client(
+        request.scope["env"].DB_SERVICE
+    )
+
+    result = await client.change_booking_status(
+        payload
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+@app.post("/commands/operation/status")
+async def command_operation_status(
+    request: Request,
+):
+    payload = await request.json()
+
+    client = D1Client(
+        request.scope["env"].DB_SERVICE
+    )
+
+    result = await client.change_operation_status(
+        payload
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+@app.post("/commands/driver/issue")
+async def command_driver_issue(
+    request: Request,
+):
+    payload = await request.json()
+
+    client = D1Client(
+        request.scope["env"].DB_SERVICE
+    )
+
+    result = await client.report_driver_issue(
+        payload
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+@app.post("/commands/operation/reassign")
+async def command_operation_reassign(
+    request: Request,
+):
+    payload = await request.json()
+
+    client = D1Client(
+        request.scope["env"].DB_SERVICE
+    )
+
+    result = await client.reassign_operation(
+        payload
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }

@@ -42,3 +42,43 @@ class D1Client:
         return await self.service.batch(
             statements
         )
+
+    async def create_booking(
+        self,
+        payload,
+    ):
+        return await self.service.createBooking(
+            payload
+        )
+
+    async def change_booking_status(
+        self,
+        payload,
+    ):
+        return await self.service.changeBookingStatus(
+            payload
+        )
+
+    async def change_operation_status(
+        self,
+        payload,
+    ):
+        return await self.service.changeOperationStatus(
+            payload
+        )
+
+    async def report_driver_issue(
+        self,
+        payload,
+    ):
+        return await self.service.reportDriverIssue(
+            payload
+        )
+
+    async def reassign_operation(
+        self,
+        payload,
+    ):
+        return await self.service.reassignOperation(
+            payload
+        )
