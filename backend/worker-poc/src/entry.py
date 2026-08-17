@@ -2,10 +2,12 @@ from workers import WorkerEntrypoint
 from fastapi import FastAPI, Request
 import asgi
 
+from d1_client import D1Client
+
 
 app = FastAPI(
     title="AXIOM Cloudflare API PoC",
-    version="0.2.0",
+    version="0.3.0",
 )
 
 
@@ -25,36 +27,51 @@ async def health():
     }
 
 
-@app.get("/environment")
-async def environment(
-    request: Request,
-):
-    env = request.scope["env"]
-
-    return {
-        "environment": getattr(
-            env,
-            "AXIOM_ENV",
-            "unknown",
-        ),
-    }
-
-
 @app.get("/db-health")
 async def db_health(
     request: Request,
 ):
     env = request.scope["env"]
 
-    response = await env.DB_SERVICE.fetch(
-        "https://axiom-db-worker/db-check"
+    client = D1Client(
+        env.DB_SERVICE
     )
 
-    data = await response.json()
+    result = await client.first(
+        """
+        SELECT
+            CURRENT_TIMESTAMP AS now,
+            1 AS connection_ok
+        """
+    )
 
     return {
         "api": "ok",
-        "db_service": data,
+        "database": "Cloudflare D1",
+        "result": result,
+    }
+
+
+@app.get("/companies-count")
+async def companies_count(
+    request: Request,
+):
+    env = request.scope["env"]
+
+    client = D1Client(
+        env.DB_SERVICE
+    )
+
+    result = await client.first(
+        """
+        SELECT COUNT(*) AS count
+        FROM companies
+        """
+    )
+
+    return {
+        "status": "ok",
+        "companies": result["count"],
     }
 
 
