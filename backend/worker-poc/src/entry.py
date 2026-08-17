@@ -5,7 +5,7 @@ import asgi
 
 app = FastAPI(
     title="AXIOM Cloudflare API PoC",
-    version="0.1.0",
+    version="0.2.0",
 )
 
 
@@ -32,12 +32,29 @@ async def environment(
     env = request.scope["env"]
 
     return {
-        "environment":
-            getattr(
-                env,
-                "AXIOM_ENV",
-                "unknown",
-            ),
+        "environment": getattr(
+            env,
+            "AXIOM_ENV",
+            "unknown",
+        ),
+    }
+
+
+@app.get("/db-health")
+async def db_health(
+    request: Request,
+):
+    env = request.scope["env"]
+
+    response = await env.DB_SERVICE.fetch(
+        "https://axiom-db-worker/db-check"
+    )
+
+    data = await response.json()
+
+    return {
+        "api": "ok",
+        "db_service": data,
     }
 
 

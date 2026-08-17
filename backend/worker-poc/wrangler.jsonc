@@ -9,5 +9,12 @@
 
   "vars": {
     "AXIOM_ENV": "poc"
-  }
+  },
+
+  "services": [
+    {
+      "binding": "DB_SERVICE",
+      "service": "axiom-db-worker"
+    }
+  ]
 }
