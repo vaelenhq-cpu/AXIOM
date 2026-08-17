@@ -221,3 +221,231 @@ async def command_operation_reassign(
         "status": "ok",
         "result": result,
     }
+
+
+# =========================================================
+# AXIOM GENERIC RESOURCE GATEWAY
+# =========================================================
+
+
+def command_client(
+    request: Request,
+):
+    return D1Client(
+        request.scope["env"].DB_SERVICE
+    )
+
+
+@app.post("/commands/resource/catalog")
+async def command_resource_catalog(
+    request: Request,
+):
+    payload = await request.json()
+
+    result = (
+        await command_client(
+            request
+        ).resource_catalog(
+            payload
+        )
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+@app.post("/commands/resource/list")
+async def command_resource_list(
+    request: Request,
+):
+    payload = await request.json()
+
+    result = (
+        await command_client(
+            request
+        ).resource_list(
+            payload
+        )
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+@app.post("/commands/resource/get")
+async def command_resource_get(
+    request: Request,
+):
+    payload = await request.json()
+
+    result = (
+        await command_client(
+            request
+        ).resource_get(
+            payload
+        )
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+@app.post("/commands/resource/create")
+async def command_resource_create(
+    request: Request,
+):
+    payload = await request.json()
+
+    result = (
+        await command_client(
+            request
+        ).resource_create(
+            payload
+        )
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+@app.post("/commands/resource/update")
+async def command_resource_update(
+    request: Request,
+):
+    payload = await request.json()
+
+    result = (
+        await command_client(
+            request
+        ).resource_update(
+            payload
+        )
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+@app.post("/commands/resource/delete")
+async def command_resource_delete(
+    request: Request,
+):
+    payload = await request.json()
+
+    result = (
+        await command_client(
+            request
+        ).resource_delete(
+            payload
+        )
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+# =========================================================
+# COMPANY
+# =========================================================
+
+
+@app.post("/commands/company/get")
+async def command_company_get(
+    request: Request,
+):
+    payload = await request.json()
+
+    result = (
+        await command_client(
+            request
+        ).get_company(
+            payload
+        )
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+@app.post("/commands/company/update")
+async def command_company_update(
+    request: Request,
+):
+    payload = await request.json()
+
+    result = (
+        await command_client(
+            request
+        ).update_company(
+            payload
+        )
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+# =========================================================
+# DASHBOARD
+# =========================================================
+
+
+@app.post("/commands/dashboard/summary")
+async def command_dashboard_summary(
+    request: Request,
+):
+    payload = await request.json()
+
+    result = (
+        await command_client(
+            request
+        ).dashboard_summary(
+            payload
+        )
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }
+
+
+# =========================================================
+# DISPATCH
+# =========================================================
+
+
+@app.post("/commands/dispatch/list")
+async def command_dispatch_list(
+    request: Request,
+):
+    payload = await request.json()
+
+    result = (
+        await command_client(
+            request
+        ).dispatch_list(
+            payload
+        )
+    )
+
+    return {
+        "status": "ok",
+        "result": result,
+    }

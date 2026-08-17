@@ -1,5 +1,8 @@
 class D1Client:
-    def __init__(self, service):
+    def __init__(
+        self,
+        service,
+    ):
         self.service = service
 
     async def db_check(self):
@@ -80,5 +83,85 @@ class D1Client:
         payload,
     ):
         return await self.service.reassignOperation(
+            payload
+        )
+
+    async def resource_catalog(
+        self,
+        payload,
+    ):
+        return await self.service.resourceCatalog(
+            payload
+        )
+
+    async def resource_list(
+        self,
+        payload,
+    ):
+        return await self.service.resourceList(
+            payload
+        )
+
+    async def resource_get(
+        self,
+        payload,
+    ):
+        return await self.service.resourceGet(
+            payload
+        )
+
+    async def resource_create(
+        self,
+        payload,
+    ):
+        return await self.service.resourceCreate(
+            payload
+        )
+
+    async def resource_update(
+        self,
+        payload,
+    ):
+        return await self.service.resourceUpdate(
+            payload
+        )
+
+    async def resource_delete(
+        self,
+        payload,
+    ):
+        return await self.service.resourceDelete(
+            payload
+        )
+
+    async def get_company(
+        self,
+        payload,
+    ):
+        return await self.service.getCompany(
+            payload
+        )
+
+    async def update_company(
+        self,
+        payload,
+    ):
+        return await self.service.updateCompany(
+            payload
+        )
+
+    async def dashboard_summary(
+        self,
+        payload,
+    ):
+        return await self.service.dashboardSummary(
+            payload
+        )
+
+    async def dispatch_list(
+        self,
+        payload,
+    ):
+        return await self.service.dispatchList(
             payload
         )

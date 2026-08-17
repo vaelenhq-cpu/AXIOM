@@ -22,6 +22,22 @@ import {
   reassignOperation,
 } from "./modules/reassignment";
 
+import {
+  resourceCatalog,
+  resourceList,
+  resourceGet,
+  resourceCreate,
+  resourceUpdate,
+  resourceDelete,
+  getCompany,
+  updateCompany,
+} from "./modules/resources";
+
+import {
+  dashboardSummary,
+  dispatchList,
+} from "./modules/dashboard";
+
 
 export interface Env {
   DB: D1Database;
@@ -37,28 +53,25 @@ type BatchStatement = {
 export default class AxiomDbWorker
   extends WorkerEntrypoint<Env> {
 
-  /*
-   * =====================================================
-   * HTTP HEALTH
-   * =====================================================
-   */
-
   async fetch(): Promise<Response> {
     return Response.json({
-      service: "AXIOM Core DB Worker",
-      status: "ok",
-      database: "Cloudflare D1",
-      architecture: "RPC Command Gateway",
-      version: "0.2.0",
+      service:
+        "AXIOM Core DB Worker",
+
+      status:
+        "ok",
+
+      database:
+        "Cloudflare D1",
+
+      architecture:
+        "RPC Command + Resource Gateway",
+
+      version:
+        "1.0.0",
     });
   }
 
-
-  /*
-   * =====================================================
-   * DATABASE HEALTH
-   * =====================================================
-   */
 
   async dbCheck() {
     return await this.env.DB
@@ -73,9 +86,7 @@ export default class AxiomDbWorker
 
   /*
    * =====================================================
-   * GENERIC DATABASE RPC
-   *
-   * Python API compatibility layer.
+   * LOW LEVEL RPC
    * =====================================================
    */
 
@@ -119,10 +130,13 @@ export default class AxiomDbWorker
 
 
   async batch(
-    statements: BatchStatement[],
+    statements:
+      BatchStatement[],
   ) {
     if (
-      !Array.isArray(statements)
+      !Array.isArray(
+        statements,
+      )
       ||
       statements.length === 0
     ) {
@@ -146,31 +160,17 @@ export default class AxiomDbWorker
             ),
       );
 
-    return await this.env.DB.batch(
-      prepared,
-    );
+    return await this.env.DB
+      .batch(
+        prepared,
+      );
   }
 
 
   /*
    * =====================================================
-   * AXIOM COMMAND RPC
+   * AXIOM ATOMIC COMMANDS
    * =====================================================
-   */
-
-
-  /*
-   * BOOKING CREATE
-   *
-   * Customer
-   * Booking
-   * Booking services
-   * Transfer
-   * Operation
-   * Tour booking
-   * Booking event
-   *
-   * tek D1 atomic batch.
    */
 
   async createBooking(
@@ -185,10 +185,6 @@ export default class AxiomDbWorker
   }
 
 
-  /*
-   * BOOKING STATE MACHINE
-   */
-
   async changeBookingStatus(
     input: Parameters<
       typeof changeBookingStatus
@@ -200,10 +196,6 @@ export default class AxiomDbWorker
     );
   }
 
-
-  /*
-   * OPERATION STATE MACHINE
-   */
 
   async changeOperationStatus(
     input: Parameters<
@@ -217,10 +209,6 @@ export default class AxiomDbWorker
   }
 
 
-  /*
-   * DRIVER ISSUE
-   */
-
   async reportDriverIssue(
     input: Parameters<
       typeof reportDriverIssue
@@ -233,16 +221,150 @@ export default class AxiomDbWorker
   }
 
 
-  /*
-   * DRIVER / VEHICLE REASSIGNMENT
-   */
-
   async reassignOperation(
     input: Parameters<
       typeof reassignOperation
     >[1],
   ) {
     return await reassignOperation(
+      this.env.DB,
+      input,
+    );
+  }
+
+
+  /*
+   * =====================================================
+   * GENERIC TENANT RESOURCES
+   * =====================================================
+   */
+
+  async resourceCatalog(
+    input: Parameters<
+      typeof resourceCatalog
+    >[1],
+  ) {
+    return await resourceCatalog(
+      this.env.DB,
+      input,
+    );
+  }
+
+
+  async resourceList(
+    input: Parameters<
+      typeof resourceList
+    >[1],
+  ) {
+    return await resourceList(
+      this.env.DB,
+      input,
+    );
+  }
+
+
+  async resourceGet(
+    input: Parameters<
+      typeof resourceGet
+    >[1],
+  ) {
+    return await resourceGet(
+      this.env.DB,
+      input,
+    );
+  }
+
+
+  async resourceCreate(
+    input: Parameters<
+      typeof resourceCreate
+    >[1],
+  ) {
+    return await resourceCreate(
+      this.env.DB,
+      input,
+    );
+  }
+
+
+  async resourceUpdate(
+    input: Parameters<
+      typeof resourceUpdate
+    >[1],
+  ) {
+    return await resourceUpdate(
+      this.env.DB,
+      input,
+    );
+  }
+
+
+  async resourceDelete(
+    input: Parameters<
+      typeof resourceDelete
+    >[1],
+  ) {
+    return await resourceDelete(
+      this.env.DB,
+      input,
+    );
+  }
+
+
+  /*
+   * =====================================================
+   * COMPANY
+   * =====================================================
+   */
+
+  async getCompany(
+    input: Parameters<
+      typeof getCompany
+    >[1],
+  ) {
+    return await getCompany(
+      this.env.DB,
+      input,
+    );
+  }
+
+
+  async updateCompany(
+    input: Parameters<
+      typeof updateCompany
+    >[1],
+  ) {
+    return await updateCompany(
+      this.env.DB,
+      input,
+    );
+  }
+
+
+  /*
+   * =====================================================
+   * DASHBOARD / DISPATCH
+   * =====================================================
+   */
+
+  async dashboardSummary(
+    input: Parameters<
+      typeof dashboardSummary
+    >[1],
+  ) {
+    return await dashboardSummary(
+      this.env.DB,
+      input,
+    );
+  }
+
+
+  async dispatchList(
+    input: Parameters<
+      typeof dispatchList
+    >[1],
+  ) {
+    return await dispatchList(
       this.env.DB,
       input,
     );
