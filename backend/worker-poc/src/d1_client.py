@@ -1,4 +1,7 @@
+import json
 from typing import Any
+
+from js import Request
 
 
 class D1Client:
@@ -10,20 +13,23 @@ class D1Client:
         path: str,
         payload: dict[str, Any],
     ) -> dict[str, Any]:
-        response = await self.service.fetch(
+
+        req = Request.new(
             f"https://axiom-db-worker{path}",
             {
                 "method": "POST",
                 "headers": {
                     "content-type": "application/json",
                 },
-                "body": __import__("json").dumps(payload),
+                "body": json.dumps(payload),
             },
         )
 
+        response = await self.service.fetch(req)
+
         data = await response.json()
 
-        if not data.get("status") == "ok":
+        if data.get("status") != "ok":
             raise RuntimeError(
                 data.get(
                     "message",
@@ -36,7 +42,7 @@ class D1Client:
     async def first(
         self,
         sql: str,
-        params: list[Any] | tuple[Any, ...] = (),
+        params=(),
     ):
         data = await self._post(
             "/query/first",
@@ -45,12 +51,13 @@ class D1Client:
                 "params": list(params),
             },
         )
+
         return data.get("result")
 
     async def all(
         self,
         sql: str,
-        params: list[Any] | tuple[Any, ...] = (),
+        params=(),
     ):
         data = await self._post(
             "/query/all",
@@ -59,12 +66,16 @@ class D1Client:
                 "params": list(params),
             },
         )
-        return data.get("results", [])
+
+        return data.get(
+            "results",
+            [],
+        )
 
     async def run(
         self,
         sql: str,
-        params: list[Any] | tuple[Any, ...] = (),
+        params=(),
     ):
         data = await self._post(
             "/query/run",
@@ -73,7 +84,11 @@ class D1Client:
                 "params": list(params),
             },
         )
-        return data.get("meta", {})
+
+        return data.get(
+            "meta",
+            {},
+        )
 
     async def batch(
         self,
@@ -85,4 +100,8 @@ class D1Client:
                 "statements": statements,
             },
         )
-        return data.get("results", [])
+
+        return data.get(
+            "results",
+            [],
+        )
