@@ -35,7 +35,14 @@ type CustomerInput = {
 
 type TransferInput = {
   pickupLocation: string;
+  pickupLatitude?: number | null;
+  pickupLongitude?: number | null;
+  pickupPlaceId?: string | null;
+
   dropoffLocation: string;
+  dropoffLatitude?: number | null;
+  dropoffLongitude?: number | null;
+  dropoffPlaceId?: string | null;
 
   pickupDatetime?: string | null;
 
@@ -678,8 +685,17 @@ export async function createBooking(
             id,
             company_id,
             booking_service_id,
+
             pickup_location,
+            pickup_latitude,
+            pickup_longitude,
+            pickup_place_id,
+
             dropoff_location,
+            dropoff_latitude,
+            dropoff_longitude,
+            dropoff_place_id,
+
             pickup_datetime,
             flight_number,
             flight_datetime,
@@ -690,8 +706,10 @@ export async function createBooking(
             special_request
           )
           VALUES (
-            ?, ?, ?, ?, ?, ?, ?,
-            ?, ?, ?, ?, ?, ?
+            ?, ?, ?,
+            ?, ?, ?, ?,
+            ?, ?, ?, ?,
+            ?, ?, ?, ?, ?, ?, ?, ?
           )
         `,
         params: [
@@ -702,8 +720,26 @@ export async function createBooking(
           transfer.pickupLocation
             .trim(),
 
+          transfer.pickupLatitude
+            ?? null,
+
+          transfer.pickupLongitude
+            ?? null,
+
+          transfer.pickupPlaceId
+            ?? null,
+
           transfer.dropoffLocation
             .trim(),
+
+          transfer.dropoffLatitude
+            ?? null,
+
+          transfer.dropoffLongitude
+            ?? null,
+
+          transfer.dropoffPlaceId
+            ?? null,
 
           transfer.pickupDatetime
             ?? null,
