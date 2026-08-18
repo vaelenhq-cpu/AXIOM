@@ -46,6 +46,8 @@ async function verifyPassword(
     ||
     iterations <= 0
     ||
+    iterations > 100_000
+    ||
     saltHex.length % 2 !== 0
   ) {
     return false;
