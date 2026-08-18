@@ -416,8 +416,11 @@ export async function reassignOperation(
 
   /*
    * -------------------------------------------------
-   * Keep newly assigned resources available
-   * until driver actually starts the operation.
+   * Reserve newly assigned resources immediately.
+   *
+   * This prevents an assigned driver or vehicle from
+   * appearing in the available pool and being assigned
+   * to another active operation.
    * -------------------------------------------------
    */
 
@@ -426,7 +429,7 @@ export async function reassignOperation(
       sql: `
         UPDATE drivers
         SET
-          status = 'available',
+          status = 'busy',
           updated_at = ?
         WHERE id = ?
           AND company_id = ?
@@ -445,7 +448,7 @@ export async function reassignOperation(
       sql: `
         UPDATE vehicles
         SET
-          status = 'available',
+          status = 'busy',
           updated_at = ?
         WHERE id = ?
           AND company_id = ?

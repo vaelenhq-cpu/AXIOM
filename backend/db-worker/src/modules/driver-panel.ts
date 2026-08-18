@@ -185,7 +185,96 @@ export async function driverCompleteOperation(db: D1Database, context: DriverCon
     { sql: `INSERT INTO operation_events (id, company_id, operation_id, event_type, old_status, new_status, description, actor_user_id, driver_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       params: [generateId("operation_event"), context.companyId, operationId, "status_changed", "in_progress", "completed", "Operation status changed: in_progress -> completed", null, context.driverId] },
   ];
-  if (row.vehicle_id) statements.push({ sql: `UPDATE vehicles SET status = 'available', updated_at = ? WHERE id = ? AND company_id = ?`, params: [now, row.vehicle_id, context.companyId] });
+  if (row.vehicle_id) {
+    statements.push({
+      sql: `UPDATE vehicles SET status = 'available', updated_at = ? WHERE id = ? AND company_id = ?`,
+      params: [now, row.vehicle_id, context.companyId],
+    });
+  }
+
+  /*
+   * Transfer operation completion must propagate to the
+   * parent booking when no other incomplete transfer
+   * operation remains.
+   */
+  if (
+    row.source_type === "transfer"
+    && row.source_id
+  ) {
+    const booking = await first<any>(
+      db,
+      `
+      SELECT
+        b.id,
+        b.status
+      FROM bookings b
+      JOIN booking_services bs
+        ON bs.company_id = b.company_id
+       AND bs.booking_id = b.id
+      JOIN transfers t
+        ON t.company_id = bs.company_id
+       AND t.booking_service_id = bs.id
+      WHERE t.company_id = ?
+        AND t.id = ?
+      LIMIT 1
+      `,
+      [
+        context.companyId,
+        row.source_id,
+      ],
+    );
+
+    if (
+      booking
+      && booking.status === "confirmed"
+    ) {
+      const incomplete = await first<any>(
+        db,
+        `
+        SELECT COUNT(*) AS count
+        FROM operations o
+        JOIN transfers t
+          ON t.company_id = o.company_id
+         AND o.source_type = 'transfer'
+         AND o.source_id = t.id
+        JOIN booking_services bs
+          ON bs.company_id = t.company_id
+         AND bs.id = t.booking_service_id
+        WHERE bs.company_id = ?
+          AND bs.booking_id = ?
+          AND o.id != ?
+          AND o.status != 'completed'
+        `,
+        [
+          context.companyId,
+          booking.id,
+          operationId,
+        ],
+      );
+
+      if (
+        Number(incomplete?.count ?? 0) === 0
+      ) {
+        statements.push({
+          sql: `
+            UPDATE bookings
+            SET
+              status = 'completed',
+              updated_at = ?
+            WHERE company_id = ?
+              AND id = ?
+              AND status = 'confirmed'
+          `,
+          params: [
+            now,
+            context.companyId,
+            booking.id,
+          ],
+        });
+      }
+    }
+  }
+
   await atomic(db, statements);
   return { completed: true };
 }
