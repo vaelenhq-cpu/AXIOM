@@ -1,4 +1,3 @@
-
 ALTER TABLE domain_provider_oauth_states
 ADD COLUMN connection_id TEXT
 REFERENCES domain_provider_connections(id)

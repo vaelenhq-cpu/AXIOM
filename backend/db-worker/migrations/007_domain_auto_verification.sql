@@ -1,4 +1,3 @@
-
 -- =========================================================
 -- AXIOM DATABASE
 -- Migration: 007_domain_auto_verification

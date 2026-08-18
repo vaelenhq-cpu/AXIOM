@@ -38,6 +38,15 @@ import {
   dispatchList,
 } from "./modules/dashboard";
 
+import {
+  ownerLogin, ownerAuthenticate, ownerLogout, driverLogin, driverAuthenticate,
+} from "./modules/auth";
+
+import {
+  driverOperationsList, driverOperationDetail, driverAcceptOperation, driverStartOperation,
+  driverRecordFieldEvent, driverCompleteOperation,
+} from "./modules/driver-panel";
+
 
 export interface Env {
   DB: D1Database;
@@ -83,6 +92,21 @@ export default class AxiomDbWorker
       .first();
   }
 
+
+
+  async ownerLogin(input: any) { return await ownerLogin(this.env.DB, input); }
+  async ownerAuthenticate(token: string) { return await ownerAuthenticate(this.env.DB, token); }
+  async ownerLogout(token: string) { return await ownerLogout(this.env.DB, token); }
+  async driverLogin(input: any) { return await driverLogin(this.env.DB, input); }
+  async driverAuthenticate(token: string) { return await driverAuthenticate(this.env.DB, token); }
+  async driverOperationsList(context: any, limit = 100) { return await driverOperationsList(this.env.DB, context, limit); }
+  async driverOperationDetail(context: any, operationId: string) { return await driverOperationDetail(this.env.DB, context, operationId); }
+  async driverAcceptOperation(context: any, operationId: string) { return await driverAcceptOperation(this.env.DB, context, operationId); }
+  async driverStartOperation(context: any, operationId: string) { return await driverStartOperation(this.env.DB, context, operationId); }
+  async driverRecordFieldEvent(context: any, operationId: string, eventType: string, description?: string | null) {
+    return await driverRecordFieldEvent(this.env.DB, context, operationId, eventType, description);
+  }
+  async driverCompleteOperation(context: any, operationId: string) { return await driverCompleteOperation(this.env.DB, context, operationId); }
 
   /*
    * =====================================================

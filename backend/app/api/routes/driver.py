@@ -7,6 +7,7 @@ from app.api.driver_dependencies import (
 from app.schemas.driver_auth import (
     DriverLoginRequest,
     DriverOperationIssueRequest,
+    DriverOperationEventRequest,
 )
 
 from app.services.driver_auth import (
@@ -61,6 +62,26 @@ async def operations(
 ):
     return DriverOperationService().list(
         identity["driver_id"]
+    )
+
+
+@router.get(
+    "/operations/{operation_id}"
+)
+async def operation_detail(
+    operation_id: str,
+    identity: dict = Depends(
+        authenticated_driver
+    ),
+):
+    return (
+        DriverOperationService()
+        .detail(
+            driver_id=identity[
+                "driver_id"
+            ],
+            operation_id=operation_id,
+        )
     )
 
 
@@ -122,6 +143,31 @@ async def complete_operation(
             operation_id=operation_id,
         )
     )
+
+@router.post(
+    "/operations/{operation_id}/event"
+)
+async def record_operation_event(
+    operation_id: str,
+    payload: DriverOperationEventRequest,
+    identity: dict = Depends(
+        authenticated_driver
+    ),
+):
+    return (
+        DriverOperationService()
+        .record_field_event(
+            driver_id=identity[
+                "driver_id"
+            ],
+            operation_id=operation_id,
+            event_type=
+                payload.event_type,
+            description=
+                payload.description,
+        )
+    )
+
 
 @router.post(
     "/operations/{operation_id}/issue"

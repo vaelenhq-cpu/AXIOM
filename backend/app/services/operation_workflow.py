@@ -1,3 +1,4 @@
+from contextlib import nullcontext
 from app.core.ids import generate_id
 from app.core.tenant import get_user_id
 from app.core.transactions import transaction
@@ -11,6 +12,9 @@ from app.services.outbox import OutboxService
 
 
 class OperationWorkflowService:
+    def __init__(self, connection=None):
+        self.connection = connection
+
     TRANSITIONS = {
         "not_planned": {
             "waiting_assignment",
@@ -53,7 +57,13 @@ class OperationWorkflowService:
         new_status: str,
         driver_id=None,
     ):
-        with transaction() as connection:
+        context = (
+            nullcontext(self.connection)
+            if self.connection is not None
+            else transaction()
+        )
+
+        with context as connection:
             repo = OperationRepository(connection)
             event_repo = OperationEventRepository(
                 connection

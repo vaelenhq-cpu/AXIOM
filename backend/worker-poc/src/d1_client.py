@@ -46,6 +46,39 @@ class D1Client:
             statements
         )
 
+    async def owner_login(self, payload):
+        return await self.service.ownerLogin(payload)
+
+    async def owner_authenticate(self, token):
+        return await self.service.ownerAuthenticate(token)
+
+    async def owner_logout(self, token):
+        return await self.service.ownerLogout(token)
+
+    async def driver_login(self, payload):
+        return await self.service.driverLogin(payload)
+
+    async def driver_authenticate(self, token):
+        return await self.service.driverAuthenticate(token)
+
+    async def driver_operations_list(self, context, limit=100):
+        return await self.service.driverOperationsList(context, limit)
+
+    async def driver_operation_detail(self, context, operation_id):
+        return await self.service.driverOperationDetail(context, operation_id)
+
+    async def driver_accept_operation(self, context, operation_id):
+        return await self.service.driverAcceptOperation(context, operation_id)
+
+    async def driver_start_operation(self, context, operation_id):
+        return await self.service.driverStartOperation(context, operation_id)
+
+    async def driver_record_field_event(self, context, operation_id, event_type, description=None):
+        return await self.service.driverRecordFieldEvent(context, operation_id, event_type, description)
+
+    async def driver_complete_operation(self, context, operation_id):
+        return await self.service.driverCompleteOperation(context, operation_id)
+
     async def create_booking(
         self,
         payload,

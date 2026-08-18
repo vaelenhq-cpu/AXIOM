@@ -11,6 +11,7 @@ class DriverOperationRepository(BaseRepository):
         self,
         driver_id: str,
         limit: int = 100,
+        operation_id: str | None = None,
     ) -> List[Dict[str, Any]]:
 
         connection, owned = self._conn()
@@ -59,7 +60,15 @@ class DriverOperationRepository(BaseRepository):
 
                     t.id AS transfer_id,
                     t.pickup_location,
+                    t.pickup_latitude,
+                    t.pickup_longitude,
+                    t.pickup_place_id,
+
                     t.dropoff_location,
+                    t.dropoff_latitude,
+                    t.dropoff_longitude,
+                    t.dropoff_place_id,
+
                     t.pickup_datetime,
                     t.flight_number,
                     t.flight_datetime,
@@ -109,6 +118,10 @@ class DriverOperationRepository(BaseRepository):
                     'cancelled',
                     'rejected'
                   )
+                  AND (
+                    ? IS NULL
+                    OR o.id = ?
+                  )
 
                 ORDER BY
                     CASE
@@ -130,6 +143,68 @@ class DriverOperationRepository(BaseRepository):
                 """,
                 (
                     get_company_id(),
+                    driver_id,
+                    operation_id,
+                    operation_id,
+                    limit,
+                ),
+            ).fetchall()
+
+            return [
+                dict(row)
+                for row in rows
+            ]
+
+        finally:
+            self._close_if_owned(
+                connection,
+                owned,
+            )
+
+    def timeline_for_driver(
+        self,
+        *,
+        driver_id: str,
+        operation_id: str,
+        limit: int = 200,
+    ) -> List[Dict[str, Any]]:
+
+        connection, owned = self._conn()
+
+        try:
+            rows = connection.execute(
+                """
+                SELECT
+                    oe.id,
+                    oe.event_type,
+                    oe.old_status,
+                    oe.new_status,
+                    oe.description,
+                    oe.actor_user_id,
+                    oe.driver_id,
+                    oe.created_at
+                FROM operation_events oe
+                WHERE oe.company_id = ?
+                  AND oe.operation_id = ?
+                  AND EXISTS (
+                    SELECT 1
+                    FROM operation_assignments oa
+                    WHERE oa.company_id = oe.company_id
+                      AND oa.operation_id = oe.operation_id
+                      AND oa.driver_id = ?
+                      AND oa.status NOT IN (
+                        'cancelled',
+                        'rejected'
+                      )
+                  )
+                ORDER BY
+                    oe.created_at ASC,
+                    oe.id ASC
+                LIMIT ?
+                """,
+                (
+                    get_company_id(),
+                    operation_id,
                     driver_id,
                     limit,
                 ),

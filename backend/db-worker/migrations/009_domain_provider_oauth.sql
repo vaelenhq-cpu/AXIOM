@@ -1,4 +1,3 @@
-
 -- =========================================================
 -- AXIOM DATABASE
 -- Migration: 009_domain_provider_oauth

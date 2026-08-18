@@ -8,7 +8,7 @@
   ],
 
   "vars": {
-    "AXIOM_ENV": "poc"
+    "AXIOM_ENV": "production"
   },
 
   "services": [

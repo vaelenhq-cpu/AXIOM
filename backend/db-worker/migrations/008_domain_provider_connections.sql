@@ -1,4 +1,3 @@
-
 -- =========================================================
 -- AXIOM DATABASE
 -- Migration: 008_domain_provider_connections

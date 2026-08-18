@@ -142,7 +142,14 @@ export interface DriverOperation {
   transfer_id?: string | null;
 
   pickup_location?: string | null;
+  pickup_latitude?: number | null;
+  pickup_longitude?: number | null;
+  pickup_place_id?: string | null;
+
   dropoff_location?: string | null;
+  dropoff_latitude?: number | null;
+  dropoff_longitude?: number | null;
+  dropoff_place_id?: string | null;
 
   pickup_datetime?: string | null;
 
@@ -267,6 +274,47 @@ export function reportDriverIssue(
       body: {
         issue_type: issueType,
         description,
+      },
+    },
+  );
+}
+
+
+export type DriverFieldEventType =
+  | "driver_en_route_to_pickup"
+  | "driver_arrived_at_pickup"
+  | "passenger_onboard"
+  | "driver_departed_pickup"
+  | "driver_arrived_at_dropoff"
+  | "passenger_dropped_off";
+
+
+export function getDriverOperationDetail(
+  operationId: string,
+) {
+  return driverRequest(
+    `/driver/operations/${encodeURIComponent(
+      operationId,
+    )}`,
+  );
+}
+
+
+export function recordDriverOperationEvent(
+  operationId: string,
+  eventType: DriverFieldEventType,
+  description?: string,
+) {
+  return driverRequest(
+    `/driver/operations/${encodeURIComponent(
+      operationId,
+    )}/event`,
+    {
+      method: "POST",
+      body: {
+        event_type: eventType,
+        description:
+          description ?? null,
       },
     },
   );
