@@ -1,5 +1,6 @@
 from workers import WorkerEntrypoint
 from fastapi import FastAPI, Request, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import asgi
 
 from d1_client import D1Client
@@ -10,6 +11,34 @@ app = FastAPI(
     title="AXIOM Cloudflare API",
     version="0.5.0",
 )
+
+
+# =========================================================
+# AXIOM CORS
+# =========================================================
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://axiom.vaelenhq.com",
+    ],
+    allow_credentials=True,
+    allow_methods=[
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "OPTIONS",
+    ],
+    allow_headers=[
+        "Authorization",
+        "Content-Type",
+        "Accept",
+        "X-Axiom-Booking-Key",
+    ],
+)
+
 
 
 def db_client(
