@@ -10,5 +10,6 @@
       "database_id": "141542f7-665e-476e-81ce-2d0e701959d6",
       "migrations_dir": "migrations"
     }
-  ]
+  ],
+  "compatibility_flags": ["nodejs_compat"]
 }
