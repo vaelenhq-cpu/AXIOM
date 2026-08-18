@@ -48,6 +48,9 @@ export function renderRoute(): void {
     path === "/login" ||
     path === "/register";
 
+  const isPublicCustomerRoute =
+    path === "/book";
+
   /*
    * Driver alanı admin auth sisteminden
    * tamamen bağımsızdır.
@@ -55,6 +58,7 @@ export function renderRoute(): void {
   if (
     !isDriverRoute &&
     !isPublicAdminRoute &&
+    !isPublicCustomerRoute &&
     !isAuthenticated()
   ) {
     history.replaceState(

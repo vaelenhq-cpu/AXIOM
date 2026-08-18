@@ -1,4 +1,5 @@
 import "./style.css";
+import "./styles/v1-final.css";
 
 import {
   AppShell,
@@ -72,6 +73,14 @@ import {
 import {
   SettingsPage,
 } from "./pages/settings/settings";
+import {
+  CustomerBookingPage,
+} from "./pages/customer/customerBooking";
+
+import {
+  BookingChannelPage,
+} from "./pages/booking-channel/bookingChannel";
+
 
 
 
@@ -87,6 +96,11 @@ registerRoute(
 registerRoute(
   "/register",
   RegisterPage,
+);
+
+registerRoute(
+  "/book",
+  CustomerBookingPage,
 );
 
 
@@ -214,6 +228,14 @@ registerRoute(
   () =>
     AppShell(
       SettingsPage(),
+    ),
+);
+
+registerRoute(
+  "/booking-channel",
+  () =>
+    AppShell(
+      BookingChannelPage(),
     ),
 );
 

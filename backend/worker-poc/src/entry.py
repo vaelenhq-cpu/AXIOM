@@ -1207,3 +1207,471 @@ async def driver_account_create_v3(request: Request):
         "SELECT id,company_id,driver_id,login_identifier,status,last_login_at,created_at,updated_at FROM driver_accounts WHERE company_id=? AND id=? LIMIT 1",
         [identity["company_id"], account_id],
     )
+
+# =========================================================
+
+# AXIOM V1 PUBLIC BOOKING FINALIZATION
+# =========================================================
+
+def _axiom_public_origin_host(request: Request) -> str:
+    origin = str(
+        request.headers.get("origin") or ""
+    ).strip().lower()
+
+    if not origin:
+        return ""
+
+    host = origin.split("://", 1)[-1].split("/", 1)[0]
+    return host.split(":", 1)[0].strip(".")
+
+
+def _axiom_normalized_domain(value) -> str:
+    domain = str(value or "").strip().lower()
+
+    domain = (
+        domain
+        .replace("https://", "")
+        .replace("http://", "")
+        .split("/", 1)[0]
+        .split(":", 1)[0]
+    )
+
+    return domain.strip(".")
+
+
+def _axiom_public_id(prefix: str) -> str:
+    uuid = __import__("uuid")
+    return prefix + "_" + uuid.uuid4().hex
+
+
+@app.get("/api/platform/booking-keys")
+async def booking_keys_list_v1(request: Request):
+    identity = await owner_identity(request)
+
+    return await db_client(request).all(
+        """
+        SELECT
+          id,
+          company_id,
+          public_key,
+          name,
+          allowed_domain,
+          active,
+          created_at,
+          revoked_at
+        FROM public_booking_keys
+        WHERE company_id = ?
+        ORDER BY active DESC, created_at DESC
+        LIMIT 100
+        """,
+        [identity["company_id"]],
+    )
+
+
+@app.post("/api/platform/booking-keys")
+async def booking_keys_create_v1(request: Request):
+    identity = await owner_identity(request)
+    payload = await request.json()
+
+    name = str(
+        payload.get("name")
+        or "Web Rezervasyon"
+    ).strip()
+
+    allowed_domain = (
+        _axiom_normalized_domain(
+            payload.get("allowed_domain")
+        )
+        or None
+    )
+
+    key_id = _axiom_public_id(
+        "public_booking_key"
+    )
+
+    public_key = (
+        "axb_"
+        + __import__("secrets").token_urlsafe(24)
+    )
+
+    client = db_client(request)
+
+    await client.run(
+        """
+        INSERT INTO public_booking_keys (
+          id,
+          company_id,
+          public_key,
+          name,
+          allowed_domain,
+          active
+        )
+        VALUES (?, ?, ?, ?, ?, 1)
+        """,
+        [
+            key_id,
+            identity["company_id"],
+            public_key,
+            name,
+            allowed_domain,
+        ],
+    )
+
+    return await client.first(
+        """
+        SELECT
+          id,
+          company_id,
+          public_key,
+          name,
+          allowed_domain,
+          active,
+          created_at,
+          revoked_at
+        FROM public_booking_keys
+        WHERE company_id = ?
+          AND id = ?
+        LIMIT 1
+        """,
+        [
+            identity["company_id"],
+            key_id,
+        ],
+    )
+
+
+@app.get("/public/booking/config")
+async def public_booking_config_v1(
+    company_slug: str,
+    request: Request,
+):
+    slug = str(
+        company_slug or ""
+    ).strip().lower()
+
+    client = db_client(request)
+
+    company = await client.first(
+        """
+        SELECT
+          id,
+          name,
+          slug,
+          default_currency,
+          country_code,
+          status
+        FROM companies
+        WHERE slug = ?
+        LIMIT 1
+        """,
+        [slug],
+    )
+
+    if (
+        not company
+        or company.get("status")
+        not in {"trial", "active"}
+    ):
+        raise HTTPException(
+            status_code=404,
+            detail="Booking company not found",
+        )
+
+    key = await client.first(
+        """
+        SELECT
+          id,
+          public_key,
+          allowed_domain
+        FROM public_booking_keys
+        WHERE company_id = ?
+          AND active = 1
+        ORDER BY created_at DESC
+        LIMIT 1
+        """,
+        [company["id"]],
+    )
+
+    if not key:
+        raise HTTPException(
+            status_code=404,
+            detail="Public booking channel is not active",
+        )
+
+    return {
+        "company": {
+            "id": company["id"],
+            "name": company["name"],
+            "slug": company["slug"],
+            "default_currency":
+                company.get("default_currency")
+                or "TRY",
+            "country_code":
+                company.get("country_code"),
+        },
+        "public_key": key["public_key"],
+    }
+
+
+@app.post("/public/booking")
+async def public_booking_create_v1(
+    request: Request,
+):
+    public_key = str(
+        request.headers.get(
+            "x-axiom-booking-key"
+        )
+        or ""
+    ).strip()
+
+    if not public_key:
+        raise HTTPException(
+            status_code=401,
+            detail="Booking key required",
+        )
+
+    client = db_client(request)
+
+    key = await client.first(
+        """
+        SELECT
+          pbk.id,
+          pbk.company_id,
+          pbk.allowed_domain,
+          pbk.active,
+          c.status AS company_status
+        FROM public_booking_keys pbk
+        JOIN companies c
+          ON c.id = pbk.company_id
+        WHERE pbk.public_key = ?
+        LIMIT 1
+        """,
+        [public_key],
+    )
+
+    if (
+        not key
+        or not key.get("active")
+        or key.get("company_status")
+        not in {"trial", "active"}
+    ):
+        raise HTTPException(
+            status_code=403,
+            detail="Booking channel is not active",
+        )
+
+    allowed = _axiom_normalized_domain(
+        key.get("allowed_domain")
+    )
+
+    origin_host = _axiom_public_origin_host(
+        request
+    )
+
+    hosted_origin = (
+        origin_host
+        == "axiom.vaelenhq.com"
+    )
+
+    if (
+        allowed
+        and origin_host
+        and not hosted_origin
+        and origin_host != allowed
+        and not origin_host.endswith(
+            "." + allowed
+        )
+    ):
+        raise HTTPException(
+            status_code=403,
+            detail="Origin is not allowed",
+        )
+
+    payload = await request.json()
+
+    request_id = str(
+        payload.get("request_id")
+        or ""
+    ).strip()
+
+    booking = payload.get("booking")
+
+    if not request_id:
+        raise HTTPException(
+            status_code=400,
+            detail="request_id is required",
+        )
+
+    if not isinstance(booking, dict):
+        raise HTTPException(
+            status_code=400,
+            detail="booking payload is required",
+        )
+
+    existing = await client.first(
+        """
+        SELECT
+          id,
+          status,
+          booking_id,
+          error_message
+        FROM public_booking_requests
+        WHERE company_id = ?
+          AND request_id = ?
+        LIMIT 1
+        """,
+        [
+            key["company_id"],
+            request_id,
+        ],
+    )
+
+    if existing:
+        if existing.get("booking_id"):
+            existing_booking = await client.first(
+                """
+                SELECT *
+                FROM bookings
+                WHERE company_id = ?
+                  AND id = ?
+                LIMIT 1
+                """,
+                [
+                    key["company_id"],
+                    existing["booking_id"],
+                ],
+            )
+
+            return {
+                "request_id": request_id,
+                "booking":
+                    existing_booking or {},
+                "customer": {},
+                "services": [],
+                "idempotent": True,
+            }
+
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                existing.get("error_message")
+                or
+                "Booking request already exists"
+            ),
+        )
+
+    public_request_id = _axiom_public_id(
+        "public_booking_request"
+    )
+
+    json_module = __import__("json")
+
+    await client.run(
+        """
+        INSERT INTO public_booking_requests (
+          id,
+          company_id,
+          public_booking_key_id,
+          request_id,
+          status,
+          payload,
+          ip_address,
+          user_agent
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        [
+            public_request_id,
+            key["company_id"],
+            key["id"],
+            request_id,
+            "validated",
+            json_module.dumps(
+                payload,
+                ensure_ascii=False,
+            ),
+            request.headers.get(
+                "cf-connecting-ip"
+            ),
+            request.headers.get(
+                "user-agent"
+            ),
+        ],
+    )
+
+    command = dict(booking)
+
+    command["tenant"] = {
+        "companyId":
+            key["company_id"],
+        "userId":
+            None,
+    }
+
+    try:
+        result = await client.create_booking(
+            command
+        )
+
+        created_booking = (
+            result.get("booking")
+            or {}
+        )
+
+        created_booking_id = (
+            created_booking.get("id")
+        )
+
+        await client.run(
+            """
+            UPDATE public_booking_requests
+            SET
+              status = 'booking_created',
+              booking_id = ?,
+              processed_at = CURRENT_TIMESTAMP
+            WHERE company_id = ?
+              AND id = ?
+            """,
+            [
+                created_booking_id,
+                key["company_id"],
+                public_request_id,
+            ],
+        )
+
+        return {
+            "request_id":
+                request_id,
+            "booking":
+                created_booking,
+            "customer":
+                result.get("customer")
+                or {},
+            "services":
+                result.get("services")
+                or [],
+        }
+
+    except Exception as exc:
+        await client.run(
+            """
+            UPDATE public_booking_requests
+            SET
+              status = 'failed',
+              error_message = ?,
+              processed_at = CURRENT_TIMESTAMP
+            WHERE company_id = ?
+              AND id = ?
+            """,
+            [
+                str(exc)[:1000],
+                key["company_id"],
+                public_request_id,
+            ],
+        )
+
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc),
+        )
+

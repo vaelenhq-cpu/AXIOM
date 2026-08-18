@@ -84,6 +84,11 @@ const BUSINESS_NAV: NavItem[] = [
 
 const SYSTEM_NAV: NavItem[] = [
   {
+    path: "/booking-channel",
+    label: "Müşteri Kanalı",
+    icon: "↗",
+  },
+  {
     path: "/integrations",
     label: "Entegrasyonlar",
     icon: "⌘",

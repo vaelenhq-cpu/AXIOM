@@ -2,9 +2,12 @@ import {
   acceptDriverOperation,
   completeDriverOperation,
   driverLogout,
+  getDriverOperationDetail,
   getDriverOperations,
+  recordDriverOperationEvent,
   reportDriverIssue,
   startDriverOperation,
+  type DriverFieldEventType,
   type DriverOperation,
 } from "../../api/driver";
 
@@ -571,7 +574,9 @@ HTMLElement {
                   ? `
                     <a
                       href="${mapsUrl(
-                        operation.pickup_location
+                        operation.pickup_location,
+                        operation.pickup_latitude,
+                        operation.pickup_longitude,
                       )}"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -588,7 +593,9 @@ HTMLElement {
                   ? `
                     <a
                       href="${mapsUrl(
-                        operation.dropoff_location
+                        operation.dropoff_location,
+                        operation.dropoff_latitude,
+                        operation.dropoff_longitude,
                       )}"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -710,6 +717,64 @@ HTMLElement {
                   await completeDriverOperation(
                     operation.id
                   );
+                }
+
+                if (
+                  action === "progress"
+                ) {
+                  const detail =
+                    await getDriverOperationDetail(
+                      operation.id
+                    ) as {
+                      workflow?: {
+                        next_event?:
+                          DriverFieldEventType | null;
+                        can_complete?: boolean;
+                      };
+                    };
+
+                  const nextEvent =
+                    detail.workflow?.next_event
+                    ?? null;
+
+                  if (nextEvent) {
+                    const confirmed =
+                      window.confirm(
+                        `${fieldEventLabel(nextEvent)} olarak kaydedilsin mi?`
+                      );
+
+                    if (!confirmed) {
+                      button.disabled = false;
+                      return;
+                    }
+
+                    await recordDriverOperationEvent(
+                      operation.id,
+                      nextEvent,
+                    );
+
+                  } else if (
+                    detail.workflow?.can_complete
+                  ) {
+                    const confirmed =
+                      window.confirm(
+                        "Operasyon tamamlandı olarak kapatılsın mı?"
+                      );
+
+                    if (!confirmed) {
+                      button.disabled = false;
+                      return;
+                    }
+
+                    await completeDriverOperation(
+                      operation.id
+                    );
+
+                  } else {
+                    throw new Error(
+                      "Operasyonun sonraki adımı hazır değil."
+                    );
+                  }
                 }
 
                 await load();
@@ -1538,10 +1603,10 @@ function actionButton(
   ) {
     return `
       <button
-        class="driver-primary-action danger"
-        data-driver-action="complete"
+        class="driver-primary-action"
+        data-driver-action="progress"
       >
-        Operasyonu Tamamla
+        Sonraki Operasyon Adımı
       </button>
     `;
   }
@@ -1557,6 +1622,34 @@ function actionButton(
   }
 
   return "";
+}
+
+
+function fieldEventLabel(
+  event: DriverFieldEventType,
+): string {
+  const labels:
+  Record<DriverFieldEventType, string> = {
+    driver_en_route_to_pickup:
+      "Pickup noktasına yola çıktım",
+
+    driver_arrived_at_pickup:
+      "Pickup noktasına geldim",
+
+    passenger_onboard:
+      "Yolcu araca bindi",
+
+    driver_departed_pickup:
+      "Pickup noktasından ayrıldım",
+
+    driver_arrived_at_dropoff:
+      "Dropoff noktasına geldim",
+
+    passenger_dropped_off:
+      "Yolcu indirildi",
+  };
+
+  return labels[event];
 }
 
 
@@ -1675,10 +1768,18 @@ function formatTime(
 
 function mapsUrl(
   location: string,
+  latitude?: number | null,
+  longitude?: number | null,
 ): string {
+  const query =
+    latitude != null &&
+    longitude != null
+      ? `${latitude},${longitude}`
+      : location;
+
   return (
     "https://www.google.com/maps/search/?api=1&query="
-    + encodeURIComponent(location)
+    + encodeURIComponent(query)
   );
 }
 
