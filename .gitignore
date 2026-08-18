@@ -21,3 +21,11 @@ backend/.env.*
 axiom_all_migrations.txt
 axiom_driver_audit.txt
 .stabilize-backups/
+node_modules/
+release/
+dist/
+*.log
+node_modules/
+release/
+dist/
+*.log

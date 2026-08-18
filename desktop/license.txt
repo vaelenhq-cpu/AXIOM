@@ -1,0 +1,14 @@
+AXIOM SOFTWARE LICENSE AGREEMENT
+
+Copyright (c) 2026 AXIOM.
+All rights reserved.
+
+By installing or using AXIOM, you acknowledge that this software is
+provided under the applicable AXIOM commercial licensing terms.
+
+Unauthorized copying, redistribution, modification, resale or
+reverse engineering may be prohibited by applicable law and the
+commercial agreement under which the software is supplied.
+
+This license text is a temporary AXIOM V1 installer license and may
+be replaced by the final commercial license before public release.

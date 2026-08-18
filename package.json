@@ -1,0 +1,67 @@
+{
+  "name": "axiom-desktop",
+  "productName": "AXIOM",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AXIOM Windows Desktop",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "frontend:build": "npm --prefix frontend run build",
+    "desktop:start": "electron .",
+    "dist:win": "npm run frontend:build && electron-builder --win nsis",
+    "dist:dir": "npm run frontend:build && electron-builder --dir"
+  },
+  "devDependencies": {
+    "electron": "^43.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "dependencies": {
+    "electron-updater": "^6.0.0"
+  },
+  "build": {
+    "appId": "com.axiom.desktop",
+    "productName": "AXIOM",
+    "artifactName": "AXIOM-Setup-${version}.${ext}",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "desktop/**/*",
+      "frontend/dist/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "compression": "maximum",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "AXIOM",
+      "license": "desktop/license.txt",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "vaelenhq-cpu",
+      "repo": "AXIOM",
+      "releaseType": "release"
+    }
+  },
+  "author": "AXIOM",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vaelenhq-cpu/AXIOM.git"
+  }
+}
